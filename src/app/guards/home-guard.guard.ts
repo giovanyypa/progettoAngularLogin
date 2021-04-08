@@ -6,6 +6,7 @@ import { UsersServiceService } from '../services/users-service.service';
   providedIn: 'root'
 })
 //simulazione della guardia.
+//attenzione e' solo una simulazione.
 export class HomeGuardGuard implements CanActivate {
   
   constructor(private userService: UsersServiceService, private router: Router) {}
