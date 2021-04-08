@@ -19,7 +19,7 @@
             </p>
 
             <div class="button">
-                <button (click) = "submit()" type="submit" mat-button>Login</button>
+                <button (click) = "submit()" [disabled]="!form.valid" type="submit" mat-button>Login</button>
             </div>
 
         </form>

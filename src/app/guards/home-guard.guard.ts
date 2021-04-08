@@ -20,7 +20,9 @@ export class HomeGuardGuard implements CanActivate {
     }
   
     checkLogin(url: string): boolean {
-      if (this.userService.isLoggedIn) { return true; }
+      if (this.userService.isLoggedIn) { 
+        console.log("sono la guardia , " ,this.userService.isLoggedIn);
+        return true; }
   
       // Store the attempted URL for redirecting
       this.userService.redirectUrl = url;       

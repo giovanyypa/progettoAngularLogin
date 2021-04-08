@@ -19,6 +19,7 @@ const routes: Routes = [
   }
 ];
 
+//useHash da tenere o no ? . 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{useHash:true})],
   exports: [RouterModule]
