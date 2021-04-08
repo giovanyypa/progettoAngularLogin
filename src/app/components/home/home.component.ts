@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
     this.serviceU.logout();
     this.router.navigate(["/login"]);
+    
   }
 
 }

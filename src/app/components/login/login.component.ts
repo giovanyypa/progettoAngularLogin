@@ -9,6 +9,8 @@ import { UsersServiceService } from 'src/app/services/users-service.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
+//responsabiltà dei componenti di occuparsi dei reindirizzamento verso le altre componenti (url). !imp.
 export class LoginComponent implements OnInit {
 
   error : boolean = false;
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
 
     this.buildFormOne();
-    
+
   }
 
   public buildFormOne() {
