@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/iusers';
 import { UsersServiceService } from 'src/app/services/users-service.service';
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   form : FormGroup ;
   
 
-  constructor(private router:Router,private formBuilder : FormBuilder,private serviceU:UsersServiceService) { }
+  constructor(private _snackBar: MatSnackBar,private router:Router,private formBuilder : FormBuilder,private serviceU:UsersServiceService) { }
 
   ngOnInit(): void {
 
@@ -39,12 +40,20 @@ export class LoginComponent implements OnInit {
     console.log("sono dentro il submit , sto per inviare i dati")
     if (this.form.valid) {
 
-        this.serviceU.login(this.form.get('username')?.value,this.form.get('password')?.value).
+        this.serviceU.login(this.form.get('username').value,this.form.get('password').value).
         subscribe((result:User)=>{
           if (result)this.router.navigate(["/home"]);
+          else this.openSnackBar("username e password sbagliati","Ok");
         });
       
     }
   }
+
+  openSnackBar(message: string, action: string) {
+      this._snackBar.open(message, action, {
+      duration: 2000,
+      });
+  }
+  
 
 }

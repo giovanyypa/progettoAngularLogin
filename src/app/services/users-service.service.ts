@@ -25,7 +25,7 @@ export class UsersServiceService {
     
     this._isLoggedIn  =   this.userTest.username === username && this.userTest.password === password;
     
-    return (this._isLoggedIn)? of(this.userTest): null;
+    return (this._isLoggedIn)? of(this.userTest): of(null);
     
   }
 
