@@ -5,7 +5,7 @@ import { UsersServiceService } from '../services/users-service.service';
 @Injectable({
   providedIn: 'root'
 })
-//simulazione della guardia per la home.
+//simulazione della guardia per la home e altro
 export class HomeGuardGuard implements CanActivate {
   
   constructor(private userService: UsersServiceService, private router: Router) {}
