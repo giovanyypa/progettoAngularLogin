@@ -1,0 +1,99 @@
+
+<mat-toolbar color="primary" layout="row" >
+  <button mat-icon-button class="menu-icon">
+      <mat-icon (click)="sidenav.toggle()" class="mat-24" aria-label="Menu">menu</mat-icon>
+  </button>
+  <span>
+      <h2>Home</h2>  <!-- titolo e altre cose da aggiunger alla barra in alto .-->
+  </span>
+  <span class="toolbar-spacer"></span>
+  <button mat-icon-button class="menu-icon">
+    <mat-icon (click)="logout()" class="mat-24" aria-label="Menu">logout</mat-icon>
+  </button>
+  
+</mat-toolbar>
+
+<mat-sidenav-container fullscreen >
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <!-- varie cose che ci servono -->
+    <p>Varie cose che ci servono</p>
+  </mat-sidenav>
+  <div class="content">
+    <mat-card class="z-depth">
+      <mat-card-title>Profili User</mat-card-title>
+      <mat-card-content>
+       
+        <ng-container>
+            <mat-list>
+              <mat-list-item >
+                <mat-icon matListIcon><span class="material-icons-outlined">
+                  person
+                  </span></mat-icon>
+                <h3 matLine> Nominativo </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+          
+              <mat-list-item >
+                <mat-icon matListIcon> date_range</mat-icon>
+                <h3 matLine> Data nascita </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+              <mat-list-item >
+                <mat-icon matListIcon>house_siding</mat-icon>
+                <h3 matLine> Luogo Nascita </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+              <mat-list-item >
+                <mat-icon matListIcon> folder_shared</mat-icon>
+                <h3 matLine> Codice Fiscale </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+              <mat-list-item >
+                <mat-icon matListIcon>folder</mat-icon>
+                <h3 matLine> Cittadinanza </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+              <mat-list-item >
+                <mat-icon matListIcon>folder</mat-icon>
+                <h3 matLine> Indirizzo </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+              <mat-list-item >
+                <mat-icon matListIcon><span class="material-icons-outlined">
+                  credit_card_on
+                  </span></mat-icon>
+                <h3 matLine> Iban </h3>
+                <p matLine>
+                  <span class="demo-2">Giovany Ypaflores </span>
+                </p>
+              </mat-list-item>
+          
+            </mat-list>
+        
+        </ng-container> 
+        
+
+      </mat-card-content>
+    </mat-card>    
+    <div style="padding: 5px;"></div>
+   
+  </div>
+</mat-sidenav-container>
