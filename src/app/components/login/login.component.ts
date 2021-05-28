@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
 
         this.serviceU.login(this.form.get('username').value,this.form.get('password').value).
-        subscribe((result:User)=>{
+        subscribe((result:any)=>{
           if (result)this.router.navigate(["/home"]);
           else this.openSnackBar("username e password sbagliati","Ok");
         });
