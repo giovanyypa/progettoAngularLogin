@@ -1,16 +1,18 @@
+import { RouteConfigLoadEnd } from "@angular/router";
 
 export interface DataUs {
+    
 
-    name : string;
-    surname : string ;
-    dateOfBirthay :Date;
-    birthPlace : Date;
-    fiscalCode : string;
-    phone : string;
-    email : string;
+    firstname : string;
+    lastname : string ;
+    username : string ;
+    password : string ;
+    birthdate :Date;
+    fiscalcode : string;
+    citizenship : string;
     address : string;
-    ibanCode : string ;
-    userType : string;
+    gender : String;
+    role : Role;
 }
 
 
@@ -18,4 +20,9 @@ export interface User {
     username : string;
     password : string ;
     userData : DataUs;
+}
+
+export interface Role {
+    nome : string;
+    descrizione : string;
 }

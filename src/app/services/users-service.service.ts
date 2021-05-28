@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { DataUs, User } from '../models/iusers';
+import { KeyckloakService } from './keyckloak.service';
+import { LocalstorageService } from './localstorage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +16,27 @@ export class UsersServiceService {
   // store the URL so we can redirect after logging in
   private _redirectUrl: string;
   
-  constructor(private router : Router) { 
-    
-    this.popolateTesUser();
-    
+  constructor(private router : Router,private keycloak:KeyckloakService,private storage:LocalstorageService) { 
+        
 
   }
 
-  login(username:string,password:string): Observable<User> {
+  login(username:string,password:string): Observable<Boolean> {
     
-    this._isLoggedIn  =   this.userTest.username === username && this.userTest.password === password;
     
-    return (this._isLoggedIn)? of(this.userTest): of(null);
+    this.keycloak.getTokenAccess(username,password)
+        .subscribe((res:any)=>{
+          console.log(res);
+          this.storage.set("access_token",res.access_token);
+          this.storage.set("refresh_token",res.refresh_token); 
+          this._isLoggedIn = true;
+        }),
+        (error) => {
+          console.log("not authorization");
+          this._isLoggedIn = false;
+        };
+
+        return of(this._isLoggedIn);
     
   }
 
@@ -37,20 +48,7 @@ export class UsersServiceService {
   }
   
 
-  popolateTesUser(){
-    this.userTest = {username:"giovany",password:"giovany",userData:{
-      name : "gio",
-    surname : "ypa" ,
-    dateOfBirthay : new Date(),
-    birthPlace :new Date(),
-    fiscalCode : "ABCDEFGHIJK",
-    phone : "3892037815",
-    email : "studente.giovany.flores@gmail.com",
-    address : "Francesco Veracini 53 Bis",
-    ibanCode : "123456789" ,
-    userType : "Admin",
-}};
-  }
+
 
   public get isLoggedIn ():boolean{
 
