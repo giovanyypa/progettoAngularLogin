@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
-import { DataUs } from '../models/iusers';
+import { DataUs, TokenWrapper } from '../models/iusers';
 import { KeyckloakService } from './keyckloak.service';
 import { LocalstorageService } from './localstorage.service';
 import { SpringbootService } from './springboot.service';
@@ -13,6 +13,7 @@ import { SpringbootService } from './springboot.service';
 })
 export class UsersServiceService {
 
+  private tokenwrapper : TokenWrapper;
   private  userInfo = new Subject<DataUs>() ; //beahvior subject ! 
   private _isLoggedIn :boolean = false; 
 
@@ -31,10 +32,10 @@ export class UsersServiceService {
     this._isLoggedIn = false;
     
     return this.keycloak.getAccessToken(username,password).pipe(
-      tap( res =>{
-          console.log(res);
-          this.storage.set("access_token",res.access_token);
-          this.storage.set("refresh_token",res.refresh_token); 
+      tap( (res)=>{
+          this.tokenwrapper = res;
+          console.log(this.tokenwrapper);
+          this.storage.set("token-wrapper",this.tokenwrapper);
           this._isLoggedIn = true;
         },
       ),switchMap(response=>  {

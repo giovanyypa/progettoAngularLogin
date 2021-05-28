@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { DataUs } from 'src/app/models/iusers';
 import { UsersServiceService } from 'src/app/services/users-service.service';
 
 @Component({
@@ -9,11 +11,14 @@ import { UsersServiceService } from 'src/app/services/users-service.service';
 })
 export class HomeComponent implements OnInit {
 
+  userInfo:DataUs;
   constructor(private serviceU : UsersServiceService ,private  router:Router) { }
 
   ngOnInit(): void {
 
-
+    this.serviceU.userInfoObservable.subscribe((user:DataUs)=> {
+        this.userInfo = user;
+    })
   }
 
   logout(){

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { LocalstorageService } from '../services/localstorage.service';
 import { UsersServiceService } from '../services/users-service.service';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { UsersServiceService } from '../services/users-service.service';
 //attenzione e' solo una simulazione.
 export class HomeGuardGuard implements CanActivate {
   
-  constructor(private userService: UsersServiceService, private router: Router) {}
+  constructor(private storage :LocalstorageService, private router: Router,private userService :UsersServiceService) {}
   
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -22,8 +23,8 @@ export class HomeGuardGuard implements CanActivate {
     }
   
     checkLogin(url: string): boolean {
-      if (this.userService.isLoggedIn) { 
-        console.log("sono la guardia , " ,this.userService.isLoggedIn);
+      if (this.storage.get("token-wrapper")) { 
+        console.log("sono la guardia , " ,this.storage.get("token-wrapper"));
         return true; }
   
       // Store the attempted URL for redirecting

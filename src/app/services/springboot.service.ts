@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataUs } from '../models/iusers';
@@ -7,25 +7,23 @@ import { DataUs } from '../models/iusers';
   providedIn: 'root'
 })
 export class SpringbootService {
+  
+  private urlSpringBootBase = "/springboot/";
+  private endPointInfo = "auth/profile";
 
-  constructor(private http:HttpClient) { }
+  
+  constructor(private http:HttpClient) {}
 
-/*
+
   // Chiamate HTTP APIKEYCLOAK (POST)
-  public getToUserInfo():Observable<DataUs>{
+  public getToUserInfo(token:string):Observable<DataUs>{
 
-    /*
-    let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    token = "Bearer " + token;
+    let header = new HttpHeaders().set('Authorization', token);
+    let url = this.urlSpringBootBase + this.endPointInfo;
 
-    let  body = new URLSearchParams();
-      body.set("client_id","springboot-microservice");
-      body.set("client_secret","7d1214f0-57a0-48dc-95b2-97d2616cd388");
-      body.set("username",username);
-      body.set("password",password);
-      body.set("grant_type","password");
+    return this.http.get<DataUs>(url,{headers: header});
 
-    return this.http.post(this.keycloakUrl,body.toString(),{headers: headers});
-
-  }*/
+  }
 
 }

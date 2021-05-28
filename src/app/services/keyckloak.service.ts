@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TokenWrapper } from '../models/iusers';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class KeyckloakService {
 
 
   // Chiamate HTTP APIKEYCLOAK (POST)
-  public getAccessToken(username : string,password:string):Observable<any>{
+  public getAccessToken(username : string,password:string):Observable<TokenWrapper>{
 
     const params = new HttpParams({
       fromObject: {
@@ -30,11 +31,11 @@ export class KeyckloakService {
       }
     });
 
-    return this.http.post(this.keycloakUrl,params,{headers: this.headers});
+    return this.http.post<TokenWrapper>(this.keycloakUrl,params,{headers: this.headers});
 
   }
 
-  public getRefreshAccessToken(refreshToken:string):Observable<any>{
+  public getRefreshAccessToken(refreshToken:string):Observable<TokenWrapper>{
 
     const params = new HttpParams({
       fromObject: {
@@ -46,7 +47,7 @@ export class KeyckloakService {
       }
     });
 
-    return this.http.post(this.keycloakUrl,params,{headers: this.headers});
+    return this.http.post<TokenWrapper>(this.keycloakUrl,params,{headers: this.headers});
 
   }
 

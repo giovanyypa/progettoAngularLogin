@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/iusers';
+import { LocalstorageService } from 'src/app/services/localstorage.service';
 import { UsersServiceService } from 'src/app/services/users-service.service';
 
 @Component({
@@ -14,14 +15,16 @@ import { UsersServiceService } from 'src/app/services/users-service.service';
 //responsabiltà dei componenti di occuparsi dei reindirizzamento verso le altre componenti (url). !imp.
 export class LoginComponent implements OnInit {
 
-  error : boolean = false;
   form : FormGroup ;
   
 
-  constructor(private _snackBar: MatSnackBar,private router:Router,private formBuilder : FormBuilder,private serviceU:UsersServiceService) { }
+  constructor(private localstorage : LocalstorageService,private _snackBar: MatSnackBar,private router:Router,private formBuilder : FormBuilder,private serviceU:UsersServiceService) { }
 
   ngOnInit(): void {
 
+    if(this.localstorage.get("token-wrapper")){
+      this.router.navigate(["/home"]);
+    }
     this.buildFormOne();
 
   }
@@ -42,18 +45,31 @@ export class LoginComponent implements OnInit {
 
         this.serviceU.login(this.form.get('username').value,this.form.get('password').value).
         subscribe((result:any)=>{
-          if (result)this.router.navigate(["/home"]);
-          else this.openSnackBar("username e password sbagliati","Ok");
+            this.router.navigate(["/home"]);
+          
+        },error => {
+          console.log(error);
+          this.errorClassificated(error);
+          
         });
-      
     }
   }
 
   openSnackBar(message: string, action: string) {
       this._snackBar.open(message, action, {
       duration: 2000,
-      });
+      
+    });
   }
   
+
+  errorClassificated(error){
+    if(error.status == 401 || error.status == 404) {
+      this.openSnackBar("username e password sbagliati","Ok");
+    }
+    else {
+      this.openSnackBar(error.statusText,"Ok");
+    }
+  }
 
 }
