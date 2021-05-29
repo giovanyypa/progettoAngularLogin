@@ -8,7 +8,8 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { MaterialUIModule } from 'material-ui/material.ui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorSpringbootInterceptor } from './interceptors/interceptor-springboot.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorSpringbootInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -31,10 +31,9 @@ export class HomeGuardGuard implements CanActivate {
       this.userService.redirectUrl = url;       
   
       // Redirect to the login page
-       this.router.navigate(['/login']);
-       return false;
+       this.router.navigate(['/login']).then(_ => false);
+      
     } 
-
 
   }
   

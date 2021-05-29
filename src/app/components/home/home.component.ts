@@ -16,9 +16,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.serviceU.userInfoObservable.subscribe((user:DataUs)=> {
-        this.userInfo = user;
-    })
+    this.serviceU.getDataUserWithToken().subscribe(
+        (resp:DataUs) => this.userInfo = resp
+    );
+
   }
 
   logout(){

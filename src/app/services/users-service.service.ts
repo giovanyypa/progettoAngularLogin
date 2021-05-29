@@ -15,51 +15,41 @@ export class UsersServiceService {
 
   private tokenwrapper : TokenWrapper;
   private  userInfo = new Subject<DataUs>() ; //beahvior subject ! 
-  private _isLoggedIn :boolean = false; 
 
   // store the URL so we can redirect after logging in
   private _redirectUrl: string;
   
-  constructor(private router : Router,private keycloak:KeyckloakService,private storage:LocalstorageService , private springBootService:SpringbootService) { 
-        
-
-  }
+  constructor(private router : Router,private keycloak:KeyckloakService,private storage:LocalstorageService , private springBootService:SpringbootService) {}
 
 
-  //res - crea interface interna .
+  //
   login(username:string,password:string): Observable<any> {
     
-    this._isLoggedIn = false;
-    
     return this.keycloak.getAccessToken(username,password).pipe(
-      tap( (res)=>{
-          this.tokenwrapper = res;
-          console.log(this.tokenwrapper);
-          this.storage.set("token-wrapper",this.tokenwrapper);
-          this._isLoggedIn = true;
+      tap( (res)=>{  
+        console.log(res);
         },
-      ),switchMap(response=>  {
-          return this.loginWithToken(response.access_token);
-      })
+      )/*,switchMap(response=>  {
+          return this.getDataUserWithToken();
+      })*/
     ); 
   }
   
-  loginWithToken(token : string):Observable<DataUs> {
+  getDataUserWithToken():Observable<DataUs> {
+
+    let token = this.storage.get("token-wrapper").access_token;
 
     return this.springBootService.getToUserInfo(token).pipe(
         tap( resp => {
-          this.userInfo.next(resp);
+          this.userInfo.next(resp); //in futuro se ci sono altre componenti che possano modificare il contenuto in un servizio rest .
         })
     );
   }
 
-
+  //
   logout(): void {
 
-    this._isLoggedIn = false;
     this.storage.clear();
-
-    this.router.navigate(["/login"]);
 
   }
   
@@ -68,16 +58,7 @@ export class UsersServiceService {
     return this.userInfo.asObservable();
   }
 
-  public get isLoggedIn ():boolean{
 
-    return this._isLoggedIn;
-
-  }
-  public set isLoggedIn (valAccess : boolean){
-
-    this._isLoggedIn = valAccess;
-
-  }
 
   public get redirectUrl():string{
     return this._redirectUrl;

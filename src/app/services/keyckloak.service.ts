@@ -1,7 +1,15 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { TokenWrapper } from '../models/iusers';
+import { LocalstorageService } from './localstorage.service';
+
+
+  const KEYCLOAK_URL = '/keycloak/auth/realms/realm-login-springboot/protocol/openid-connect/token';
+  const HEADERS = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+  const CLIENT_ID = "springboot-microservice";
+  const CLIENT_SECRET = "b6a46747-e77f-40dc-aea6-17431b2b2af8";
 
 @Injectable({
   providedIn: 'root'
@@ -9,47 +17,63 @@ import { TokenWrapper } from '../models/iusers';
 export class KeyckloakService {
 
   
-  private keycloakUrl = '/keycloak/auth/realms/realm-login-springboot/protocol/openid-connect/token';
-  private headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
-  private client_id = "springboot-microservice";
-  private client_secret = "b6a46747-e77f-40dc-aea6-17431b2b2af8";
-
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient,private localstorage:LocalstorageService) {}
 
 
   // Chiamate HTTP APIKEYCLOAK (POST)
-  public getAccessToken(username : string,password:string):Observable<TokenWrapper>{
-
-    const params = new HttpParams({
+  public getAccessToken(username : string,password:string):Observable<any>{
+    this.localstorage.clear();
+    let params = new HttpParams({
       fromObject: {
         grant_type: 'password',
-        client_id: this.client_id,
+        client_id: CLIENT_ID,
         username: username,
         password: password,
-        client_secret:this.client_secret
+        client_secret:CLIENT_SECRET
 
       }
     });
 
-    return this.http.post<TokenWrapper>(this.keycloakUrl,params,{headers: this.headers});
+    return this.http.post<any>(KEYCLOAK_URL,params,{headers: HEADERS}).pipe(
+        tap(res => {              
+          this.localstorage.set("token-wrapper",res);
+        }),
+      catchError(KeyckloakService.handleError)
+    );
 
   }
 
-  public getRefreshAccessToken(refreshToken:string):Observable<TokenWrapper>{
 
+  public getRefreshAccessToken(refreshToken:string):Observable<any>{
+    this.localstorage.clear();
     const params = new HttpParams({
       fromObject: {
         grant_type: 'refresh_token',
-        client_id: this.client_id,
+        client_id: CLIENT_ID,
         refresh_token: refreshToken,
-        client_secret:this.client_secret
+        client_secret:CLIENT_SECRET
 
       }
     });
 
-    return this.http.post<TokenWrapper>(this.keycloakUrl,params,{headers: this.headers});
+    return this.http.post<any>(KEYCLOAK_URL,params,{headers: HEADERS}).pipe(
+      tap(res => {
+        console.log("nuovo token" , res)
+        this.localstorage.set("token-wrapper",res);
+      }),
+      catchError(KeyckloakService.handleError)
+    );
 
   }
 
-
+  private static handleError(error: HttpErrorResponse): any {
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    return throwError(error);
+  }
 }
