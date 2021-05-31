@@ -2,14 +2,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TokenWrapper } from '../models/iusers';
 import { LocalstorageService } from './localstorage.service';
 
 
-  const KEYCLOAK_URL = '/keycloak/auth/realms/Demo-Realm/protocol/openid-connect/token';
+  const KEYCLOAK_URL = '/keycloak/auth/realms/realm-login-springboot/protocol/openid-connect/token';
   const HEADERS = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
   const CLIENT_ID = "springboot-microservice";
-  const CLIENT_SECRET = "7d1214f0-57a0-48dc-95b2-97d2616cd388 ";
+  const CLIENT_SECRET = "b6a46747-e77f-40dc-aea6-17431b2b2af8";
 
 @Injectable({
   providedIn: 'root'
