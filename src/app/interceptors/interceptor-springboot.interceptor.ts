@@ -11,11 +11,12 @@ import { Observable, throwError } from 'rxjs';
 import { LocalstorageService } from '../services/localstorage.service';
 import { catchError, map } from 'rxjs/operators';
 import { KeyckloakService } from '../services/keyckloak.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class InterceptorSpringbootInterceptor implements HttpInterceptor {
 
-  constructor(private storage:LocalstorageService,private keycloakS:KeyckloakService) {}
+  constructor(private storage:LocalstorageService,private keycloakS:KeyckloakService,private router : Router) {}
 
   //intercetto i vari endpoint  a cui voglio accedere per controllare la validita dei token 
   //in caso postitivo non succede niente , in caso negativo mi ricreo un token valido a partire dal refres_token .
@@ -28,16 +29,24 @@ export class InterceptorSpringbootInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
           catchError((error: HttpErrorResponse) => {
               if (error.status === 401) {
-                if (error.error === 'messaggio di scaduto token') {
+               
                     this.keycloakS.getRefreshAccessToken(token_wrapper.refresh_token)
                       .subscribe(() => {
                         location.reload();
                       });
-                } 
+               
               }
               if(error.status >=500 && error.status<=510){
                 console.error("errore server backend");
+                this.router.navigate(["/error-springboot"]); 
               }
+
+              if (error.status === 404) {
+                
+                  this.router.navigate(["/not-found"]); 
+                
+              }
+
               return throwError(error);
           })
         );

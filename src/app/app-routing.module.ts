@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ErrorSpringbootComponent } from './components/error-springboot/error-springboot.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeGuardGuard } from './guards/home-guard.guard';
 
 const routes: Routes = [
@@ -11,6 +13,13 @@ const routes: Routes = [
   {
     path:'login',component : LoginComponent
   },
+  {
+    path:'not-found',component : NotFoundComponent,canActivate: [HomeGuardGuard]
+  },
+  {
+    path:'error-springboot',component : ErrorSpringbootComponent,canActivate: [HomeGuardGuard]
+  },
+  
   {
     path:'home',component : HomeComponent,canActivate: [HomeGuardGuard],
   },

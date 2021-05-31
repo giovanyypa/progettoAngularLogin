@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     this.serviceU.getDataUserWithToken().subscribe(
         (resp:DataUs) => this.userInfo = resp
-    );
+    )
 
   }
 

@@ -10,12 +10,16 @@ import { MaterialUIModule } from 'material-ui/material.ui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorSpringbootInterceptor } from './interceptors/interceptor-springboot.interceptor';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ErrorSpringbootComponent } from './components/error-springboot/error-springboot.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
+    NotFoundComponent,
+    ErrorSpringbootComponent,
 
   ],
   imports: [
